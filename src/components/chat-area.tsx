@@ -2,8 +2,6 @@
 
 import { ChatSession } from '@/lib/parse-md';
 import { useQueryState } from 'nuqs';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import clsx from 'clsx';
 import { User } from 'lucide-react';
 
@@ -63,11 +61,8 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
                     'prose prose-sm max-w-none break-words',
                     isUser ? 'prose-invert' : 'prose-gray prose-p:leading-relaxed prose-pre:bg-gray-100 prose-pre:text-gray-800'
                   )}
-                >
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {msg.content}
-                  </ReactMarkdown>
-                </div>
+                  dangerouslySetInnerHTML={{ __html: msg.contentHtml }}
+                />
               </div>
             </div>
           );

@@ -1,9 +1,16 @@
 import fs from 'fs';
 import path from 'path';
+import { marked } from 'marked';
+
+// Configure marked to support GitHub Flavored Markdown and line breaks
+marked.setOptions({
+  gfm: true,
+  breaks: true,
+});
 
 export interface ChatMessage {
   role: 'user' | 'ai';
-  content: string;
+  contentHtml: string;
 }
 
 export interface ChatSession {
@@ -70,13 +77,19 @@ function parseMessages(content: string): ChatMessage[] {
   for (const line of lines) {
     if (line.trim() === '问：') {
       if (currentRole && currentContent.length > 0) {
-        messages.push({ role: currentRole, content: currentContent.join('\n').trim() });
+        messages.push({ 
+          role: currentRole, 
+          contentHtml: marked.parse(currentContent.join('\n').trim()) as string
+        });
       }
       currentRole = 'user';
       currentContent = [];
     } else if (line.trim() === '答：') {
       if (currentRole && currentContent.length > 0) {
-        messages.push({ role: currentRole, content: currentContent.join('\n').trim() });
+        messages.push({ 
+          role: currentRole, 
+          contentHtml: marked.parse(currentContent.join('\n').trim()) as string
+        });
       }
       currentRole = 'ai';
       currentContent = [];
@@ -88,7 +101,10 @@ function parseMessages(content: string): ChatMessage[] {
   }
 
   if (currentRole && currentContent.length > 0) {
-    messages.push({ role: currentRole, content: currentContent.join('\n').trim() });
+    messages.push({ 
+      role: currentRole, 
+      contentHtml: marked.parse(currentContent.join('\n').trim()) as string
+    });
   }
 
   return messages;
