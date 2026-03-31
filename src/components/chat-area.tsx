@@ -3,7 +3,6 @@
 import { ChatSession } from '@/lib/parse-md';
 import { useQueryState } from 'nuqs';
 import clsx from 'clsx';
-import { User } from 'lucide-react';
 
 export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
   const [selectedId] = useQueryState('id');
@@ -40,29 +39,42 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
               {/* Avatar */}
               <div
                 className={clsx(
-                  'w-10 h-10 rounded-full flex items-center justify-center shrink-0 mt-1',
-                  isUser ? 'bg-blue-500 text-white' : 'bg-[#d24b35] text-white'
+                  'w-10 h-10 rounded-full flex items-center justify-center shrink-0 mt-1 z-10',
+                  isUser ? 'bg-[#475569] text-white' : 'bg-[#d24b35] text-white'
                 )}
               >
-                {isUser ? <User size={20} /> : <span className="font-bold text-sm">亦仁</span>}
+                {isUser ? <span className="font-bold text-sm">天辉</span> : <span className="font-bold text-sm">亦仁</span>}
               </div>
 
-              {/* Bubble */}
-              <div
-                className={clsx(
-                  'px-4 md:px-5 py-3 rounded-2xl max-w-[85%] md:max-w-[80%] shadow-sm',
-                  isUser
-                    ? 'bg-blue-500 text-white rounded-tr-sm'
-                    : 'bg-white text-gray-900 rounded-tl-sm border border-gray-100'
-                )}
-              >
+              {/* Bubble Container */}
+              <div className="relative max-w-[85%] md:max-w-[80%] flex">
+                {/* Tail/Triangle */}
+                <div 
+                  className={clsx(
+                    'absolute top-4 w-0 h-0 border-[6px] border-transparent',
+                    isUser 
+                      ? 'right-[-10px] border-l-[#95ec69]' 
+                      : 'left-[-10px] border-r-white'
+                  )}
+                />
+                
+                {/* Bubble Content */}
                 <div
                   className={clsx(
-                    'prose prose-sm max-w-none break-words',
-                    isUser ? 'prose-invert' : 'prose-gray prose-p:leading-relaxed prose-pre:bg-gray-100 prose-pre:text-gray-800'
+                    'px-4 md:px-5 py-3 rounded-lg shadow-sm w-full',
+                    isUser
+                      ? 'bg-[#95ec69] text-gray-900'
+                      : 'bg-white text-gray-900 border border-gray-100'
                   )}
-                  dangerouslySetInnerHTML={{ __html: msg.contentHtml }}
-                />
+                >
+                  <div
+                    className={clsx(
+                      'prose prose-sm max-w-none break-words',
+                      isUser ? 'prose-gray' : 'prose-gray prose-p:leading-relaxed prose-pre:bg-gray-100 prose-pre:text-gray-800'
+                    )}
+                    dangerouslySetInnerHTML={{ __html: msg.contentHtml }}
+                  />
+                </div>
               </div>
             </div>
           );
