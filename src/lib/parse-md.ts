@@ -17,6 +17,7 @@ export interface ChatSession {
   id: string;
   title: string;
   date: string;
+  order: number; // Added order field
   messages: ChatMessage[];
 }
 
@@ -53,6 +54,7 @@ export function getChatSessions(): ChatSession[] {
     if (!match) return null;
 
     const id = match[1];
+    const order = parseInt(id.split('-')[1], 10); // Extract the order number
     const title = match[2];
     const dateStr = id.split('-')[0];
     const date = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
@@ -60,7 +62,7 @@ export function getChatSessions(): ChatSession[] {
     const content = fs.readFileSync(filePath, 'utf-8');
     const messages = parseMessages(content);
 
-    return { id, title, date, messages };
+    return { id, title, date, order, messages };
   }).filter(Boolean) as ChatSession[];
 
   // Sort by id descending (time descending)

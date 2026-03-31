@@ -80,13 +80,23 @@ export function Sidebar({ sessions }: { sessions: ChatSession[] }) {
                     key={session.id}
                     onClick={() => setSelectedId(session.id)}
                     className={clsx(
-                      'w-full text-left px-3 py-2.5 rounded-xl transition-all duration-200 flex flex-col gap-1',
+                      'w-full text-left px-3 py-2.5 rounded-xl transition-all duration-200 flex items-start gap-2.5',
                       activeId === session.id
                         ? 'bg-[#f0f7ff] text-blue-900 font-medium'
                         : 'hover:bg-gray-50 text-gray-600 border-transparent'
                     )}
                   >
-                    <span className="text-sm truncate w-full block">
+                    <span 
+                      className={clsx(
+                        'flex items-center justify-center shrink-0 w-5 h-5 rounded-full text-[11px] font-bold mt-0.5',
+                        activeId === session.id
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-gray-100 text-gray-500'
+                      )}
+                    >
+                      {session.order}
+                    </span>
+                    <span className="text-sm truncate w-full leading-relaxed">
                       {session.title}
                     </span>
                   </button>
