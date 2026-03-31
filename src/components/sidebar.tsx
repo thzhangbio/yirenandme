@@ -51,7 +51,7 @@ export function Sidebar({ sessions }: { sessions: ChatSession[] }) {
                 生
               </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">AI 亦仁</h2>
+            <h1 className="text-xl font-bold text-gray-900 mb-3">AI 亦仁</h1>
             <p className="text-xs text-gray-500 leading-relaxed px-1">
               生财有术社区创始人，多年创业经验，专注于帮助普通人发现赚钱机会和提升赚钱能力。
             </p>

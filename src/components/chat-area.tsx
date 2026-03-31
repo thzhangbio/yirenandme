@@ -22,7 +22,7 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
       {/* Header */}
       <div className="h-14 border-b border-gray-200 bg-[#f5f5f5] flex items-center px-6 shadow-sm z-10 shrink-0 relative">
         {/* On mobile, leave space for the hamburger menu (w-14) */}
-        <h2 className="text-lg font-medium text-gray-800 md:ml-0 ml-10 truncate">{activeSession.title}</h2>
+        <h1 className="text-lg font-medium text-gray-800 md:ml-0 ml-10 truncate">{activeSession.title}</h1>
       </div>
 
       {/* Messages Area */}
