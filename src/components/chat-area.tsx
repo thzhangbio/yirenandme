@@ -22,12 +22,13 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#f5f5f5]">
       {/* Header */}
-      <div className="h-14 border-b border-gray-200 bg-[#f5f5f5] flex items-center px-6 shadow-sm z-10 shrink-0">
-        <h2 className="text-lg font-medium text-gray-800">{activeSession.title}</h2>
+      <div className="h-14 border-b border-gray-200 bg-[#f5f5f5] flex items-center px-6 shadow-sm z-10 shrink-0 relative">
+        {/* On mobile, leave space for the hamburger menu (w-14) */}
+        <h2 className="text-lg font-medium text-gray-800 md:ml-0 ml-10 truncate">{activeSession.title}</h2>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
         {activeSession.messages.map((msg, idx) => {
           const isUser = msg.role === 'user';
           return (
@@ -51,7 +52,7 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
               {/* Bubble */}
               <div
                 className={clsx(
-                  'px-5 py-3 rounded-2xl max-w-[85%] shadow-sm',
+                  'px-4 md:px-5 py-3 rounded-2xl max-w-[85%] md:max-w-[80%] shadow-sm',
                   isUser
                     ? 'bg-blue-500 text-white rounded-tr-sm'
                     : 'bg-white text-gray-900 rounded-tl-sm border border-gray-100'
@@ -59,7 +60,7 @@ export function ChatArea({ sessions }: { sessions: ChatSession[] }) {
               >
                 <div
                   className={clsx(
-                    'prose prose-sm max-w-none',
+                    'prose prose-sm max-w-none break-words',
                     isUser ? 'prose-invert' : 'prose-gray prose-p:leading-relaxed prose-pre:bg-gray-100 prose-pre:text-gray-800'
                   )}
                 >
