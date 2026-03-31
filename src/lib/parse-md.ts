@@ -13,13 +13,36 @@ export interface ChatSession {
   messages: ChatMessage[];
 }
 
-export function getChatSessions(): ChatSession[] {
-  const rootDir = process.cwd();
-  const files = fs.readdirSync(rootDir).filter(file => file.endsWith('.md') && file !== 'README.md');
+// 递归获取目录下所有的 .md 文件
+function getAllMdFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
+  if (!fs.existsSync(dirPath)) {
+    return arrayOfFiles;
+  }
 
-  const sessions = files.map(file => {
+  const files = fs.readdirSync(dirPath);
+
+  files.forEach((file) => {
+    const fullPath = path.join(dirPath, file);
+    if (fs.statSync(fullPath).isDirectory()) {
+      arrayOfFiles = getAllMdFiles(fullPath, arrayOfFiles);
+    } else {
+      if (file.endsWith('.md')) {
+        arrayOfFiles.push(fullPath);
+      }
+    }
+  });
+
+  return arrayOfFiles;
+}
+
+export function getChatSessions(): ChatSession[] {
+  const postsDir = path.join(process.cwd(), 'post');
+  const mdFiles = getAllMdFiles(postsDir);
+
+  const sessions = mdFiles.map(filePath => {
+    const fileName = path.basename(filePath);
     // Parse filename: "20260331-1 我又来汇报进度了亦仁老大.md"
-    const match = file.match(/^(\d{8}-\d+)\s+(.+)\.md$/);
+    const match = fileName.match(/^(\d{8}-\d+)\s+(.+)\.md$/);
     if (!match) return null;
 
     const id = match[1];
@@ -27,7 +50,7 @@ export function getChatSessions(): ChatSession[] {
     const dateStr = id.split('-')[0];
     const date = `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`;
 
-    const content = fs.readFileSync(path.join(rootDir, file), 'utf-8');
+    const content = fs.readFileSync(filePath, 'utf-8');
     const messages = parseMessages(content);
 
     return { id, title, date, messages };
